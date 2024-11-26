@@ -96,7 +96,7 @@ jobs:
   
       - name: Run ZAP in Daemon Mode
         run: |
-          zaproxy -daemon -host 0.0.0.0 -port 8080 &
+          zaproxy -daemon -host 0.0.0.0 -config api.key='' -port 8080 &
           sleep 60
           echo "ZAP has started successfully"
         
@@ -110,7 +110,7 @@ jobs:
       - name: Run ZAP Quick Scan with zap-cli
         run: |
           # Run a quick scan with zap-cli
-          zap-cli --port 8080 --zap-url http://localhost quick-scan http://localhost:8000
+          zap-cli --port 8080 --api-key '' --zap-url http://localhost quick-scan http://localhost:8000
           echo "ZAP quick-scan has started successfully"
           sleep 180  # Give enough time for the scan to complete
   
