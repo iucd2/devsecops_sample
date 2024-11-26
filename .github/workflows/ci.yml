@@ -95,12 +95,27 @@ jobs:
 
     - name: Run ZAP DAST Scan
       run: |
-        zaproxy -daemon -port 8080
+        zaproxy -daemon -port 8080 &
         sleep 60
         echo "ZAP has started successfuly"
+
+    - name: Check zaproxy is running
+      run: |
+        echo "Checking ZAP status..."
+        while ! curl -s http://localhost:8080/JSON/core/view/version/; do
+          echo "Waiting for ZAP to initialize..."
+          sleep 5
+        done
+        echo "ZAP is ready to scan!"
+
+    - name: Scanning using ZAP
+      run: |
         zap-cli quick-scan http://localhost:8000
         echo "ZAP quick-scan has started successfuly"
         sleep 120
+
+    - name: Exporting ZAP report
+      run: |
         zap-cli report -o zap-report.html -f html
         echo "ZAP report has successfuly created"
 
