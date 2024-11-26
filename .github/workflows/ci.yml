@@ -83,21 +83,26 @@ jobs:
       run: |
         docker pull pygoat/pygoat:latest
         docker run --rm -d -p 8000:8000 pygoat/pygoat:latest
-        sleep 30
+        sleep 60
+        echo "PyGoat has started successfuly"
 
     - name: Install ZAP
       run: |
         sudo apt update
         sudo apt install -y snapd
         sudo snap install zaproxy --classic
+        echo "ZAP installed successfuly"
 
     - name: Run ZAP DAST Scan
       run: |
         zaproxy -daemon -port 8080
-        sleep 30
+        sleep 60
+        echo "ZAP has started successfuly"
         zap-cli quick-scan http://localhost:8000
-        sleep 30
+        echo "ZAP quick-scan has started successfuly"
+        sleep 120
         zap-cli report -o zap-report.html -f html
+        echo "ZAP report has successfuly created"
 
     - name: Upload DAST Report Artifact
       uses: actions/upload-artifact@v3
