@@ -86,39 +86,10 @@ jobs:
           sleep 60
           echo "PyGoat has started successfully"
   
-      - name: Install ZAP and zap-cli
-        run: |
-          sudo apt update
-          sudo apt install -y snapd
-          sudo snap install zaproxy --classic
-          pip install --upgrade zapcli
-          echo "ZAP and zap-cli are installed successfully"
-  
-      - name: Run ZAP in Daemon Mode
-        run: |
-          zaproxy -daemon -host 0.0.0.0 -config api.key='' -port 8080 &
-          sleep 60
-          echo "ZAP has started successfully"
-        
-          echo "Checking ZAP status..."
-          while ! curl -s http://localhost:8080/JSON/core/view/helloWorld; do
-            echo "Waiting for ZAP to initialize..."
-            sleep 5
-          done
-          echo "ZAP is ready to scan!"
-  
-      - name: Run ZAP Quick Scan with zap-cli
-        run: |
-          # Run a quick scan with zap-cli
-          zap-cli --port 8080 --api-key '' --zap-url http://localhost quick-scan http://localhost:8000
-          echo "ZAP quick-scan has started successfully"
-          sleep 180  # Give enough time for the scan to complete
-  
-      - name: Export ZAP Report
-        run: |
-          # Export the ZAP report in HTML format
-          zap-cli report -o zap-report.html -f html
-          echo "ZAP report has successfully been created"
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.9.0
+        with:
+          target: 'http://localhost:8000'
   
       - name: Upload DAST Report Artifact
         uses: actions/upload-artifact@v3
