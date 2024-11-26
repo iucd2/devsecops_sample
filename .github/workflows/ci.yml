@@ -86,12 +86,13 @@ jobs:
         sleep 60
         echo "PyGoat has started successfuly"
 
-    - name: Install ZAP
+    - name: Install ZAP and zap-cpi
       run: |
         sudo apt update
         sudo apt install -y snapd
         sudo snap install zaproxy --classic
-        echo "ZAP installed successfuly"
+        pip install --upgrade zapcli
+        echo "ZAP and zap-cli are installed successfuly"
 
     - name: Run ZAP
       run: |
