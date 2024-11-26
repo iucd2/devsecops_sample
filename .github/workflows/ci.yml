@@ -82,7 +82,7 @@ jobs:
     - name: Pull and Run PyGoat
       run: |
         docker pull pygoat/pygoat:latest
-        docker run --rm -d -p 8000:8000 pygoat/pygoat:latest
+        docker run --rm -d --network="host" -p 8000:8000 pygoat/pygoat:latest
         sleep 60
         echo "PyGoat has started successfuly"
 
@@ -94,24 +94,22 @@ jobs:
         pip install --upgrade zapcli
         echo "ZAP and zap-cli are installed successfuly"
 
-    - name: Run ZAP
+    - name: Run ZAP and ZAP Scan
       run: |
         zaproxy -daemon -host 0.0.0.0 -port 8080 &
         sleep 60
         echo "ZAP has started successfuly"
 
         echo "Checking ZAP status..."
-        while ! curl -s http://localhost:8080; do
+        while ! curl -s http://localhost:8080/JSON/core/view/helloWorld; do
           echo "Waiting for ZAP to initialize..."
           sleep 5
         done
         echo "ZAP is ready to scan!"
 
-    - name: Scanning using ZAP
-      run: |
         zap-cli --port 8080 --zap-url http://localhost quick-scan http://localhost:8000 
         echo "ZAP quick-scan has started successfuly"
-        sleep 120
+        sleep 180
 
     - name: Exporting ZAP report
       run: |
