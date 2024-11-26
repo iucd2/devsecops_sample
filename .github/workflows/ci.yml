@@ -89,9 +89,8 @@ jobs:
     - name: Install ZAP and zap-cli
       run: |
         sudo apt update
-        sudo apt install -y snapd
-        sudo snap install zaproxy --classic
         sudo apt install -y snapd jq
+        sudo snap install zaproxy --classic
         pip install --upgrade zapcli
         echo "ZAP and zap-cli are installed successfuly"
 
