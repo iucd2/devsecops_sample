@@ -86,7 +86,7 @@ jobs:
         sleep 60
         echo "PyGoat has started successfuly"
 
-    - name: Install ZAP and zap-cpi
+    - name: Install ZAP and zap-cli
       run: |
         sudo apt update
         sudo apt install -y snapd
@@ -109,7 +109,7 @@ jobs:
 
     - name: Scanning using ZAP
       run: |
-        zap-cli quick-scan http://localhost:8000
+        zap-cli quick-scan http://localhost:8000 --zap-url http://localhost:8080
         echo "ZAP quick-scan has started successfuly"
         sleep 120
 
