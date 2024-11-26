@@ -93,16 +93,14 @@ jobs:
         sudo snap install zaproxy --classic
         echo "ZAP installed successfuly"
 
-    - name: Run ZAP DAST Scan
+    - name: Run ZAP
       run: |
-        zaproxy -daemon -port 8080 &
+        zaproxy -daemon -host 0.0.0.0 -port 8080 &
         sleep 60
         echo "ZAP has started successfuly"
 
-    - name: Check zaproxy is running
-      run: |
         echo "Checking ZAP status..."
-        while ! curl -s http://localhost:8080/JSON/core/view/version/; do
+        while ! curl -s http://localhost:8080; do
           echo "Waiting for ZAP to initialize..."
           sleep 5
         done
