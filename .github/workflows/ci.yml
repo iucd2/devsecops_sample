@@ -109,7 +109,7 @@ jobs:
 
     - name: Scanning using ZAP
       run: |
-        zap-cli --port 8080 --zap-url http://0.0.0.0 quick-scan http://localhost:8000 
+        zap-cli --port 8080 --zap-url http://localhost quick-scan http://localhost:8000 
         echo "ZAP quick-scan has started successfuly"
         sleep 120
 
