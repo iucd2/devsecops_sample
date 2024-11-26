@@ -105,13 +105,13 @@ jobs:
         echo "ZAP_API_KEY=$ZAP_API_KEY" >> $GITHUB_ENV
       
         echo "Checking ZAP status..."
-        while ! curl -s http://localhost:8080/JSON/core/view/helloWorld?apikey=${{ secrets.ZAP_API_KEY }}; do
+        while ! curl -s http://localhost:8080/JSON/core/view/helloWorld?apikey=${{ env.ZAP_API_KEY }}; do
           echo "Waiting for ZAP to initialize..."
           sleep 5
         done
         echo "ZAP is ready to scan!"
 
-        zap-cli --port 8080 --zap-url http://localhost --api-key ${{ secrets.ZAP_API_KEY }} quick-scan http://localhost:8000 
+        zap-cli --port 8080 --zap-url http://localhost --api-key ${{ env.ZAP_API_KEY }} quick-scan http://localhost:8000 
         echo "ZAP quick-scan has started successfuly"
         sleep 180
 
